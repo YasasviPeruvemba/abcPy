@@ -46,4 +46,3 @@ constexpr  CostType COST_TYPE_MAX = REAL_TYPE_MAX;
 PROJECT_NAMESPACE_END
 
 #endif // ABC_PY_TYPE_H_
-
