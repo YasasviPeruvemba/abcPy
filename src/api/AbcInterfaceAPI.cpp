@@ -28,6 +28,7 @@ void initAbcInterfaceAPI(py::module &m)
         .def("refactor", &PROJECT_NAMESPACE::AbcInterface::refactor, "refactor action",
                 py::arg("n") = -1, py::arg("l") = false, py::arg("z") = false)
         .def("compress2rs", &PROJECT_NAMESPACE::AbcInterface::compress2rs)
+        .def("compress2rs_balance", &PROJECT_NAMESPACE::AbcInterface::compress2rs_balance)
         .def("resyn2rs", &PROJECT_NAMESPACE::AbcInterface::resyn2rs)
         .def("dch", &PROJECT_NAMESPACE::AbcInterface::dch)
         .def("dc2", &PROJECT_NAMESPACE::AbcInterface::dc2)

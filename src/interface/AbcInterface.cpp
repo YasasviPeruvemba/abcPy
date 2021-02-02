@@ -237,6 +237,29 @@ float AbcInterface::compress2rs()
     return (float)_lastClk/CLOCKS_PER_SEC;
 }
 
+float AbcInterface::compress2rs_balance()
+{
+    // "b -l; rs -K 6 -l; rw -l; rs -K 6 -N 2 -l; rf -l; rs -K 8 -l; b -l; rs -K 8 -N 2 -l; rw -l; rs -K 10 -l; rwz -l; rs -K 10 -N 2 -l; b -l; rs -K 12 -l; rfz -l; rs -K 12 -N 2 -l; rwz -l; b -l
+    auto beginClk = clock();
+    if (this->resub(6, -1, -1, true, false) == -1.0) { return -1.0; }
+    if (this->rewrite(true, false) == -1.0) { return -1.0; }
+    if (this->resub(6, 2, -1, true, false) == -1.0) { return -1.0; }
+    if (this->refactor(-1, true, false) == -1.0) { return -1.0; }
+    if (this->resub(8, -1, -1, true, false) == -1.0) { return -1.0; }
+    if (this->resub(8, 2, -1, true, false) == -1.0) { return -1.0; }
+    if (this->rewrite(true, false) == -1.0) { return -1.0; }
+    if (this->resub(10, -1, -1, true, false) == -1.0) { return -1.0; }
+    if (this->rewrite(true, true) == -1.0) { return -1.0; }
+    if (this->resub(10, 2, -1, true, false) == -1.0) { return -1.0; }
+    if (this->resub(12, -1, -1, true, false) == -1.0) { return -1.0; }
+    if (this->refactor(-1, true, true) == -1.0) { return -1.0; }
+    if (this->resub(12, 2, -1, true, false) == -1.0) { return -1.0; }
+    if (this->rewrite(true, true) == -1.0) { return -1.0; }
+    auto endClk = clock();
+    _lastClk = endClk - beginClk;
+    return (float)_lastClk/CLOCKS_PER_SEC;
+}
+
 float AbcInterface::resyn2rs()
 {
     // "b; rs -K 6; rw; rs -K 6 -N 2; rf; rs -K 8; b; rs -K 8 -N 2; rw; rs -K 10; rwz; rs -K 10 -N 2; b; rs -K 12; rfz; rs     -K 12 -N 2; rwz; b"
