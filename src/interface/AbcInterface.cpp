@@ -1,4 +1,5 @@
 #include "AbcInterface.h"
+#include <chrono>
 
 
 #if defined(ABC_NAMESPACE)
@@ -72,7 +73,7 @@ void AbcInterface::end()
 
 float AbcInterface::read(const std::string &filename)
 {
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     char Command[1000];
     // read the file
     sprintf( Command, "read %s", filename.c_str() );
@@ -88,10 +89,11 @@ float AbcInterface::read(const std::string &filename)
         ERR("Cannot execute command \"%s\".\n", Command );
         return -1.0;
     }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
     this->updateGraph();
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    return _lastClk;
 }
 
 float AbcInterface::balance(bool l, bool d, bool s, bool x)
@@ -113,15 +115,16 @@ float AbcInterface::balance(bool l, bool d, bool s, bool x)
     {
         cmd += " -x ";
     }
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
     {
         ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
         return -1.0;
     }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::resub(IntType k, IntType n, IntType f, bool l, bool z)
@@ -150,15 +153,16 @@ float AbcInterface::resub(IntType k, IntType n, IntType f, bool l, bool z)
     {
         cmd += " -z ";
     }
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
     {
         ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
         return -1.0;
     }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::rewrite(bool l, bool z)
@@ -172,15 +176,16 @@ float AbcInterface::rewrite(bool l, bool z)
     {
         cmd += " -z ";
     }
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
     {
         ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
         return -1.0;
     }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::refactor(IntType n, bool l, bool z)
@@ -199,21 +204,22 @@ float AbcInterface::refactor(IntType n, bool l, bool z)
     {
         cmd += " -z ";
     }
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
     {
         ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
         return -1.0;
     }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::compress2rs()
 {
     // "b -l; rs -K 6 -l; rw -l; rs -K 6 -N 2 -l; rf -l; rs -K 8 -l; b -l; rs -K 8 -N 2 -l; rw -l; rs -K 10 -l; rwz -l; rs -K 10 -N 2 -l; b -l; rs -K 12 -l; rfz -l; rs -K 12 -N 2 -l; rwz -l; b -l
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if (this->balance(true) == -1.0) { return -1.0; }
     if (this->resub(6, -1, -1, true, false) == -1.0) { return -1.0; }
     if (this->rewrite(true, false) == -1.0) { return -1.0; }
@@ -232,15 +238,16 @@ float AbcInterface::compress2rs()
     if (this->resub(12, 2, -1, true, false) == -1.0) { return -1.0; }
     if (this->rewrite(true, true) == -1.0) { return -1.0; }
     if (this->balance(true, false, false, false) == -1.0) { return -1.0; }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::compress2rs_balance()
 {
     // "b -l; rs -K 6 -l; rw -l; rs -K 6 -N 2 -l; rf -l; rs -K 8 -l; b -l; rs -K 8 -N 2 -l; rw -l; rs -K 10 -l; rwz -l; rs -K 10 -N 2 -l; b -l; rs -K 12 -l; rfz -l; rs -K 12 -N 2 -l; rwz -l; b -l
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if (this->resub(6, -1, -1, true, false) == -1.0) { return -1.0; }
     if (this->rewrite(true, false) == -1.0) { return -1.0; }
     if (this->resub(6, 2, -1, true, false) == -1.0) { return -1.0; }
@@ -255,15 +262,16 @@ float AbcInterface::compress2rs_balance()
     if (this->refactor(-1, true, true) == -1.0) { return -1.0; }
     if (this->resub(12, 2, -1, true, false) == -1.0) { return -1.0; }
     if (this->rewrite(true, true) == -1.0) { return -1.0; }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::resyn2rs()
 {
     // "b; rs -K 6; rw; rs -K 6 -N 2; rf; rs -K 8; b; rs -K 8 -N 2; rw; rs -K 10; rwz; rs -K 10 -N 2; b; rs -K 12; rfz; rs     -K 12 -N 2; rwz; b"
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if (this->balance() == -1.0) { return -1.0; }
     if (this->resub(6, -1, -1, false, false) == -1.0) { return -1.0; }
     if (this->rewrite(false, false) == -1.0) { return -1.0; }
@@ -282,37 +290,40 @@ float AbcInterface::resyn2rs()
     if (this->resub(12, 2, -1, false, false) == -1.0) { return -1.0; }
     if (this->rewrite(false, true) == -1.0) { return -1.0; }
     if (this->balance(false, false, false, false) == -1.0) { return -1.0; }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::dch()
 {
     std::string cmd = "dch";
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
     {
         ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
         return -1.0;
     }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 float AbcInterface::dc2()
 {
     std::string cmd = "dc2";
-    auto beginClk = clock();
+    auto start = std::chrono::system_clock::now();
     if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
     {
         ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
         return -1.0;
     }
-    auto endClk = clock();
-    _lastClk = endClk - beginClk;
-    return (float)_lastClk/CLOCKS_PER_SEC;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
 }
 
 IntType AbcInterface::numNodes()
