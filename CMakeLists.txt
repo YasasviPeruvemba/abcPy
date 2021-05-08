@@ -72,16 +72,13 @@ mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
 file(GLOB SOURCES src/global/*.h    src/global/*.cpp
                   src/interface/*.h      src/interface/*.cpp
-                  src/util/*.h      src/util/*.cpp
-                  src/util/thirdparty/*.h      src/util/thirdparty/*.cpp
+                  src/util/Assert.h      src/util/MsgPrinter.cpp
+		  src/util/MsgPrinter.h
                   )
 
 file(GLOB EXE_SOURCES src/main/main.cpp)
 file(GLOB PY_API_SOURCES src/api/*.cpp)
 file(GLOB UNITTEST_SOURCES 
-    unittest/main/*.cpp
-    unittest/db/*.cpp
-    unittest/parser/*.cpp
     ${SOURCES})
 
 #pybind11
@@ -100,8 +97,6 @@ add_subdirectory(${PYBIND11_ROOT_DIR} "./pybind11")
 if (NOT PYTHON_INCLUDE_DIR OR NOT PYTHON_LIBRARIES)
 find_package(PythonLibs REQUIRED)
 endif()
-#set(PYTHON_INCLUDE_DIR "/home/local/eda09/keren/libs/python-3.7.5-shared/include/python3.7m")
-#set(PYTHON_LIBRARIES "/home/local/eda09/keren/libs/python-3.7.5-shared/lib/libpython3.7m.a")
 message(STATUS "python include directory: ${PYTHON_INCLUDE_DIR}")
 message(STATUS "python libraries: ${PYTHON_LIBRARIES}")
 
@@ -133,7 +128,6 @@ set(CMAKE_EXE_LINKER_FLAGS "-pthread -static-libgcc -static-libstdc++ -static")
 #add_executable(${PROJECT_NAME} ${SOURCES} ${EXE_SOURCES})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/unittest
     ${Boost_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIRS}
     ${ABC_ROOT_DIR}
@@ -155,6 +149,5 @@ file(GLOB STATIC_LIB
 
 
 # Add modules to pybind
-pybind11_add_module("abc_py" ${PY_API_SOURCES} ${SOURCES})
-target_link_libraries("abc_py" PUBLIC ${STATIC_LIB} ${Boost_LIBRARIES} )
-
+pybind11_add_module("abcPy" ${PY_API_SOURCES} ${SOURCES})
+target_link_libraries("abcPy" PUBLIC ${STATIC_LIB} ${Boost_LIBRARIES} )

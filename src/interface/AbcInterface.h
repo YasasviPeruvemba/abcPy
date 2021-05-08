@@ -1,16 +1,10 @@
-/**
- * @file AbcInterface.h
- * @brief The interface to ABC
- * @author Keren Zhu
- * @date 10/23/2019
- */
-
 #ifndef ABC_PY_ABC_INTERFACE_H_
 #define ABC_PY_ABC_INTERFACE_H_
 
 #include "global/global.h"
 #include <abc_src/base/main/mainInt.h>
 #include <abc_src/base/abc/abc.h>
+#include <vector>
 
 PROJECT_NAMESPACE_BEGIN
 
@@ -25,18 +19,24 @@ class AigStats
         IndexType numLat() const { return _numLat; }
         IndexType numAnd() const { return _numAnd; }
         IndexType lev() const { return _lev; }
+        RealType area() const { return _area; }
+        RealType depth() const { return _depth; }
 
         void setNumIn(IndexType numIn) { _numIn = numIn; }
         void setNumOut(IndexType numOut) { _numOut = numOut; }
         void setNumLat(IndexType numLat) { _numLat = numLat; }
         void setNumAnd(IndexType numAnd) { _numAnd = numAnd; }
         void setLev(IndexType lev) { _lev = lev; }
+        void setArea(RealType ar) { _area = ar; }
+        void setDepth(RealType dp) { _depth = dp; }
     private:
         IndexType  _numIn = 0; ///< Input port
         IndexType  _numOut = 0; ///< Output port
         IndexType  _numLat = 0; ///< Number of latches
         IndexType  _numAnd = 0; ///< Number of AND
         IndexType  _lev = 0; ///< The deepest logic level
+        RealType _area = 0.0; ///< The number of 6-LUTs
+        RealType _depth = 0.0; ///< The depth of 6-LUT Mapped 
 };
 
 
@@ -191,6 +191,9 @@ class AbcInterface
         /// @param filename
         /// @return if succesful
         float read(const std::string & filename);
+        /// @brief LUT Mapping
+        /// @return AIGStats
+        AigStats map();
         /*------------------------------*/ 
         /* Take actions                 */
         /*------------------------------*/ 
@@ -266,6 +269,8 @@ class AbcInterface
         IntType _numPI = -1; ///< Number of PIs of the AIG network
         IntType _numPO = -1; ///< Number of POs of the AIG network
         IntType _numConst = -1; ///< Number of CONST of the AIG network
+        RealType _area = 0.0;
+        RealType _delay = 0.0;
         std::vector<AigNode> _aigNodes; ///< The current AIG network nodes
 };
 

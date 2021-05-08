@@ -1,10 +1,3 @@
-/**
- * @file type.h
- * @brief Define some the types being used globally
- * @author Keren Zhu
- * @date 09/30/2019
- */
-
 #ifndef ABC_PY_TYPE_H_
 #define ABC_PY_TYPE_H_
 

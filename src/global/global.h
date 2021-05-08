@@ -1,10 +1,3 @@
-/**
- * @file global.h
- * @brief The header file intended to be included globally in the project
- * @author Keren Zhu
- * @date 09/30/2019
- */
-
 #ifndef ABC_PY_GLOBAL_H_
 #define ABC_PY_GLOBAL_H_
 
@@ -15,7 +8,6 @@
 #include "parameter.h"
 #include "util/MsgPrinter.h"
 #include "util/Assert.h"
-#include "util/kLibBase.h"
 
 PROJECT_NAMESPACE_BEGIN
 

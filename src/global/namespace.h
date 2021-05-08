@@ -1,10 +1,3 @@
-/**
- * @file namespace.h
- * @brief Define the namespaces
- * @author Keren Zhu
- * @date 09/30/2019
- */
-
 #ifndef ABC_PY_NAMESPACE_H_
 #define ABC_PY_NAMESPACE_H_
 

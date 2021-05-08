@@ -1,10 +1,3 @@
-/**
- * @file AbcInterfaceAPI.cpp
- * @brief The Python interface for the classes AbcInterface
- * @author Keren Zhu
- * @date 10/23/2019
- */
-
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include "interface/AbcInterface.h"
@@ -17,6 +10,7 @@ void initAbcInterfaceAPI(py::module &m)
         .def("start", &PROJECT_NAMESPACE::AbcInterface::start, "Start the ABC framework")
         .def("end", &PROJECT_NAMESPACE::AbcInterface::end, "Stop the ABC framework")
         .def("read", &PROJECT_NAMESPACE::AbcInterface::read, "Read a file")
+        .def("map", &PROJECT_NAMESPACE::AbcInterface::map, "Map 6-LUT")
         .def("aigStats", &PROJECT_NAMESPACE::AbcInterface::aigStats, "Get the AIG stats from the ABC framework`")
         .def("balance", &PROJECT_NAMESPACE::AbcInterface::balance, "balance action",
                 py::arg("l") = false, py::arg("d") = false, py::arg("s") = false, py::arg("x") = false)
@@ -41,7 +35,9 @@ void initAbcInterfaceAPI(py::module &m)
         .def_property("numOut", &PROJECT_NAMESPACE::AigStats::numOut, &PROJECT_NAMESPACE::AigStats::setNumOut)
         .def_property("numLat", &PROJECT_NAMESPACE::AigStats::numLat, &PROJECT_NAMESPACE::AigStats::setNumLat)
         .def_property("numAnd", &PROJECT_NAMESPACE::AigStats::numAnd, &PROJECT_NAMESPACE::AigStats::setNumAnd)
-        .def_property("lev", &PROJECT_NAMESPACE::AigStats::lev, &PROJECT_NAMESPACE::AigStats::setLev);
+        .def_property("lev", &PROJECT_NAMESPACE::AigStats::lev, &PROJECT_NAMESPACE::AigStats::setLev)
+        .def_property("depth", &PROJECT_NAMESPACE::AigStats::depth, &PROJECT_NAMESPACE::AigStats::setDepth)
+        .def_property("area", &PROJECT_NAMESPACE::AigStats::area, &PROJECT_NAMESPACE::AigStats::setArea);
 
     py::class_<PROJECT_NAMESPACE::AigNode>(m, "AigNode")
         .def(py::init<>())

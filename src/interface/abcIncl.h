@@ -1,10 +1,3 @@
-/**
- * @file AbcIncl.h
- * @brief The essential components need to be included in this frameowrk. Codes copy from original abc
- * @author Keren Zhu
- * @date 11/15/2019
- */
-
 #ifndef ABC_PY_ABC_INCL_H_
 #define ABC_PY_ABC_INCL_H_
 

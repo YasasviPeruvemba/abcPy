@@ -20,6 +20,8 @@ void   Abc_Stop();
 
 Abc_Frame_t_ * Abc_FrameGetGlobalFrame();
 int    Cmd_CommandExecute( Abc_Frame_t_ * pAbc, const char * sCommand );
+double Abc_NtkGetMappedArea( Abc_Ntk_t * pNtk );
+float Abc_NtkDelayTrace( Abc_Ntk_t * pNtk, Abc_Obj_t * pOut, Abc_Obj_t * pIn, int fPrint );
 
 
 #if defined(ABC_NAMESPACE)
@@ -82,7 +84,7 @@ float AbcInterface::read(const std::string &filename)
         ERR("Cannot execute command \"%s\".\n", Command );
         return false;
     }
-    // Default do a strash
+    // Default do a strash 
     sprintf( Command, "strash" );
     if ( Cmd_CommandExecute( _pAbc, Command ) )
     {
@@ -214,6 +216,37 @@ float AbcInterface::refactor(IntType n, bool l, bool z)
     auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     _lastClk = elapsed.count()/1000000.0;
     return _lastClk;
+}
+
+AigStats AbcInterface::map()
+{
+    this->updateGraph();
+    AigStats stats;
+    stats.setNumIn(_numPI);
+    stats.setNumOut(_numPO);
+    stats.setNumAnd(_numAigAnds);
+    stats.setLev(_depth);
+
+    std::string cmd = "if -K 6";
+    if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    {
+        ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+        return stats;
+    }
+    
+    RealType ar = (RealType) Abc_NtkGetLargeNodeNum(_pAbc->pNtkCur);
+    RealType dl = (RealType) Abc_NtkLevel(_pAbc->pNtkCur);
+    stats.setArea(ar);
+    stats.setDepth(dl);
+
+    cmd = "strash";
+    if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    {
+        ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+        return stats;
+    }
+    this->updateGraph();
+    return stats;
 }
 
 float AbcInterface::compress2rs()

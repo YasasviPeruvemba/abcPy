@@ -57,13 +57,13 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
 
 setup(
-    name='abc_py',
+    name='abcPy',
     version='0.0.1',
-    author='Keren Zhu',
-    author_email='keren.zhu@utexas.edu',
+    author='Yasasvi Peruvemba',
+    author_email='ee170002061@iiti.ac.in',
     description='The python interface to ABC',
     long_description='',
-    ext_modules=[CMakeExtension('abc_py')],
+    ext_modules=[CMakeExtension('abcPy')],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
 )
