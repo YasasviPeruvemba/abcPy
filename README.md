@@ -5,7 +5,11 @@ A Python module for the [Berkeley-ABC](https://github.com/berkeley-abc/abc) logi
 # Install
 
 # Berkeley-ABC
-The logic synthesis tool can be installed from [here](https://github.com/berkeley-abc/abc).
+The logic synthesis tool can be installed from [here](https://github.com/berkeley-abc/abc). Make sure to generate the shared library file for the Berkeley-ABC tool via running
+```
+make ABC_USE_PIC=1 libabc.so
+```
+inside the Berkeley-ABC directory
 
 # pybind11
 [pybind11](https://github.com/pybind/pybind11) has also been added as a submodule, hence following the instruction above, it will also be installed along with `mockturtle`
