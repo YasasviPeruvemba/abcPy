@@ -44,7 +44,7 @@ The install command may require sudo permissions, instead passing the `--user` f
 # Usage
 
 `import abcPy` like the standard Python library. For more information on its functionalities, use `help(abcPy)` after importing it.
-In case the import statement indocates the absence of the module, make sure to include the .egg file generated install process into the system path. This can be done within python -
+In case the import statement indicates the absence of the module, make sure to include the .egg file generated install process into the system path. This can be done within python -
 ```
 import sys
 sys.path.append(<path_to_egg>)
@@ -53,7 +53,7 @@ import abcPy
 
 --------
 # Contact
-Yasasvi V Peruvemba, Indian Institute of Technology Indore  \[[mail](ee170002061@iiti.ac.in)\]
+Yasasvi V Peruvemba, Indian Institute of Technology Indore  \[[mail](yasasvi.peruvemba@gmail.com)\]
 
 Please contact me over any issue or further suggestions.
 
