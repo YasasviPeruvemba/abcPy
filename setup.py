@@ -33,7 +33,7 @@ class CMakeBuild(build_ext):
 
     def build_extension(self, ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
-        cmake_args = ['-DABC_DIR=/home/excalibur/BTP/abc','-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
+        cmake_args = ['-DABC_DIR=/home/excalibur/BTP/abcPy/abc','-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                       '-DPYTHON_EXECUTABLE=' + sys.executable]
 
         cfg = 'Debug' if self.debug else 'Release'
