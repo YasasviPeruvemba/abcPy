@@ -197,6 +197,22 @@ class AbcInterface
         /*------------------------------*/ 
         /* Take actions                 */
         /*------------------------------*/ 
+        /// @brief read a library
+        /// @param noparams
+        /// @return if succesful
+        float read_lib();
+        /// @brief tech mapping
+        /// @param noparams
+        /// @return if succesful
+        float tech_map();
+        /// @brief check equivalence
+        /// @param noparams
+        /// @return if succesful
+        float cec();
+        /// @brief print mapped gates
+        /// @param noparams
+        /// @return if succesful
+        float print_gates();
         /// @brief balance. transforms the current network into a well-balanced AIG
         /// @param first -l toggle minimizing the number of levels [default = yes]
         /// @param second -d    : toggle duplication of logic [default = no]
@@ -223,6 +239,10 @@ class AbcInterface
         /// @param third: -z       : toggle using zero-cost replacements [default = no]
         /// @return time taken. -1 if failed
         float refactor(IntType n = -1, bool l = false, bool z = false);
+        /// @brief backup: set storing backup
+        float backup();
+        /// @brief recall: recall stored network
+        float recall();
         /*------------------------------*/ 
         /* Baselines                    */
         /*------------------------------*/ 

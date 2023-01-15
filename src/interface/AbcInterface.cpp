@@ -1,5 +1,6 @@
 #include "AbcInterface.h"
 #include <chrono>
+#include <iostream>
 
 
 #if defined(ABC_NAMESPACE)
@@ -96,6 +97,109 @@ float AbcInterface::read(const std::string &filename)
     _lastClk = elapsed.count()/1000000.0;
     this->updateGraph();
     return _lastClk;
+}
+
+float AbcInterface::read_lib()
+{
+    std::string cmd = "read_library mcnc.genlib";
+    
+    auto start = std::chrono::system_clock::now();
+    if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    {
+        ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+        return -1.0;
+    }
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;
+
+}
+
+float AbcInterface::tech_map()
+{
+  std::string cmd = "map -a";
+    
+    auto start = std::chrono::system_clock::now();
+    if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    {
+        ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+        return -1.0;
+    }
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;  
+
+}
+
+float AbcInterface::cec()
+{
+  std::string cmd = "cec";
+    
+    auto start = std::chrono::system_clock::now();
+    if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    {
+        ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+        return -1.0;
+    }
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk;  
+
+}
+
+float AbcInterface::print_gates()
+{
+//   std::string cmd = "print_gates";
+    
+    // auto start = std::chrono::system_clock::now();
+    // if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    // {
+    //     ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+    //     return -1.0;
+    // }
+    
+    RealType map_ar = (RealType) Abc_NtkGetMappedArea(_pAbc->pNtkCur);
+    // std::cout << "this is a number: " << map_ar;
+    // auto end = std::chrono::system_clock::now();
+    // auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    // _lastClk = elapsed.count()/1000000.0;
+    // return _lastClk;  
+    return map_ar;
+}
+
+float AbcInterface::backup()
+{
+    std::string cmd = "set backup";
+    
+    auto start = std::chrono::system_clock::now();
+    if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    {
+        ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+        return -1.0;
+    }
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk; 
+}
+
+float AbcInterface::recall()
+{
+    std::string cmd = "recall";
+    
+    auto start = std::chrono::system_clock::now();
+    if ( Cmd_CommandExecute( _pAbc, cmd.c_str() ) )
+    {
+        ERR("Cannot execute command \"%s\".\n", cmd.c_str() );
+        return -1.0;
+    }
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    _lastClk = elapsed.count()/1000000.0;
+    return _lastClk; 
 }
 
 float AbcInterface::balance(bool l, bool d, bool s, bool x)
@@ -375,7 +479,7 @@ void AbcInterface::updateGraph()
 
     _aigNodes.resize(this->numNodes());
     //DBG("update graph: num of nodes %d \n", this->numNodes());
-
+    std::cout << "\nnum of nodes:" << this->numNodes() << "\n";
     for (IntType idx = 0; idx < this->numNodes(); ++idx)
     {
         auto pObj = (Abc_Obj_t*)_pAbc->pNtkCur->vObjs->pArray[idx];

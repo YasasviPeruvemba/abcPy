@@ -10,7 +10,11 @@ void initAbcInterfaceAPI(py::module &m)
         .def("start", &PROJECT_NAMESPACE::AbcInterface::start, "Start the ABC framework")
         .def("end", &PROJECT_NAMESPACE::AbcInterface::end, "Stop the ABC framework")
         .def("read", &PROJECT_NAMESPACE::AbcInterface::read, "Read a file")
+        .def("read_lib", &PROJECT_NAMESPACE::AbcInterface::read_lib, "Read a library for tech mapping")
+        .def("tech_map", &PROJECT_NAMESPACE::AbcInterface::tech_map, "Tech mapping")
         .def("map", &PROJECT_NAMESPACE::AbcInterface::map, "Map 6-LUT")
+        .def("cec", &PROJECT_NAMESPACE::AbcInterface::cec, "Check network equivalence")
+        .def("print_gates", &PROJECT_NAMESPACE::AbcInterface::print_gates, "Print mapped gates")
         .def("aigStats", &PROJECT_NAMESPACE::AbcInterface::aigStats, "Get the AIG stats from the ABC framework`")
         .def("balance", &PROJECT_NAMESPACE::AbcInterface::balance, "balance action",
                 py::arg("l") = false, py::arg("d") = false, py::arg("s") = false, py::arg("x") = false)
@@ -27,7 +31,10 @@ void initAbcInterfaceAPI(py::module &m)
         .def("dch", &PROJECT_NAMESPACE::AbcInterface::dch)
         .def("dc2", &PROJECT_NAMESPACE::AbcInterface::dc2)
         .def("aigNode", &PROJECT_NAMESPACE::AbcInterface::aigNode, "Get one AigNode")
+        .def("backup", &PROJECT_NAMESPACE::AbcInterface::backup, "Set storing of network")
+        .def("recall", &PROJECT_NAMESPACE::AbcInterface::recall, "Recall old network")
         .def("numNodes", &PROJECT_NAMESPACE::AbcInterface::numNodes, "Get the number of nodes");
+
 
     py::class_<PROJECT_NAMESPACE::AigStats>(m , "AigStats")
         .def(py::init<>())
